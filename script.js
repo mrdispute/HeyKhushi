@@ -318,20 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ]);
       updateChannelUI(ch);
       renderVideos(latest, popular);
-
-      // Populate gallery with YT thumbnails (use top 3 popular video thumbnails)
-      const galThumbs = [...popular, ...latest];
-      const galSlots = ['gal-yt-1', 'gal-yt-2', 'gal-yt-3'];
-      galSlots.forEach((slotId, i) => {
-        const slot = document.getElementById(slotId);
-        if (slot && galThumbs[i] && galThumbs[i].thumb) {
-          const img = slot.querySelector('img');
-          if (img) {
-            img.src = galThumbs[i].thumb;
-            img.alt = galThumbs[i].title || 'Video thumbnail';
-          }
-        }
-      });
     } catch (e) { console.error('YT init error:', e); }
   }
 

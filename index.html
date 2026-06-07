@@ -420,17 +420,18 @@
     if (!canvas) throw new Error('No flower canvas');
 
     // ── CONFIG ──
-    const COUNT = 12000;           // lower for perf as background
-    const SPEED = 1;
-    const PETAL_SIZE = 88.8;
+    const COUNT = 12000;
+    const PETAL_SIZE = 70;             // smaller so it's further from frame
     const PETAL_COUNT = 7.2;
     const BLOOM_FACTOR = 0.87;
 
     // ── SCENE ──
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.012);
+    scene.fog = new THREE.FogExp2(0x000000, 0.008);   // softer fog for distance
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.set(0, 60, 100);   // start facing slightly upward
+    // Camera below looking UP — ceiling fan perspective
+    camera.position.set(0, -220, 0);
+    camera.up.set(0, 0, -1);          // orient camera so "up" aligns properly
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -443,10 +444,10 @@
     composer.addPass(new RenderPass(scene, camera));
     const bloom = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1.2, 0.4, 0
+      1.0, 0.4, 0
     );
-    bloom.strength = 1.2;
-    bloom.radius = 0.35;
+    bloom.strength = 0.9;             // softer bloom for distant/dim look
+    bloom.radius = 0.3;
     bloom.threshold = 0;
     composer.addPass(bloom);
 
@@ -472,7 +473,7 @@
     }
 
     // ── SCROLL TRACKING ──
-    let scrollFraction = 0;  // 0 at top, increases as you scroll down
+    let scrollFraction = 0;
     const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
 
     window.addEventListener('scroll', () => {
@@ -481,37 +482,32 @@
     }, { passive: true });
 
     // ── ANIMATION ──
-    const clock = new THREE.Clock();
-
     function animate() {
       requestAnimationFrame(animate);
-      const time = clock.getElapsedTime() * SPEED;
 
-      // Scroll-driven rotation: Y-axis only, clockwise as user scrolls
-      const scrollAngle = scrollFraction * Math.PI * 2;   // full 360° over page
-      mesh.rotation.x = -Math.PI * 0.3;                   // fixed tilt (face upward)
-      mesh.rotation.y = scrollAngle;                       // only Y rotates with scroll
-      mesh.rotation.z = 0;                                 // locked
+      // Y-axis rotation driven ONLY by scroll — no auto-rotate
+      const scrollAngle = scrollFraction * Math.PI * 3;    // 1.5 full turns over page
+      mesh.rotation.x = 0;                                 // flat in XZ plane
+      mesh.rotation.y = scrollAngle;                       // clockwise on scroll only
+      mesh.rotation.z = 0;
 
-      // Camera: fixed angle, gentle drift only
-      camera.position.x = Math.sin(time * 0.06) * 5;
-      camera.position.y = 60;
-      camera.position.z = 100;
+      // Camera: fixed below, no movement
+      camera.position.set(0, -220, 0);
       camera.lookAt(0, 0, 0);
 
       for (let i = 0; i < COUNT; i++) {
         const u = i / COUNT;
         const a = u * 31.4159265359;
-        const t = time * 0.35;
+        const scrollT = scrollAngle * 0.15;               // petals shift with scroll only
         const k = PETAL_COUNT;
         const rose = Math.cos(k * a);
         const r = PETAL_SIZE * (0.15 + BLOOM_FACTOR * Math.abs(rose));
         const layer = (u - 0.5) * 2.0;
-        const twist = a + t + layer * 1.2;
+        const twist = a + scrollT + layer * 1.2;           // scroll-driven, no time
         const spread = 1.0 - 0.45 * Math.abs(layer);
         const x = r * spread * Math.cos(twist);
         const z = r * spread * Math.sin(twist);
-        const y = PETAL_SIZE * 0.35 * layer + PETAL_SIZE * 0.12 * rose * Math.sin(a * 0.5 + t);
+        const y = PETAL_SIZE * 0.35 * layer + PETAL_SIZE * 0.12 * rose * Math.sin(a * 0.5 + scrollT);
 
         target.set(x, y, z);
 
