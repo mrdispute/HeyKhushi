@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeyKhushi — Content Creator & Gamer</title>
+  <meta name="description" content="Hey, I'm Khushi! Full-time YouTube content creator, gamer, and streamer. Join me for chill gaming streams, community vibes, and good times.">
+  <meta name="keywords" content="Khushi, HeyKhushi, content creator, gamer, streamer, YouTube, gaming, Valorant, GTA, Fall Guys">
+  <meta name="author" content="Khushi">
+  <meta property="og:title" content="HeyKhushi — Content Creator & Gamer">
+  <meta property="og:description" content="Full-time YouTube content creator, gamer, and streamer. Creating a life I love 🐒">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Three.js import map for flower particle -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Ambient background gradient orbs -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="ambient-orb orb-4"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <!-- Three.js Flower Canvas -->
+  <canvas id="flower-canvas"></canvas>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- ========== NAVIGATION ========== -->
+  <header class="navbar glass-nav" id="navbar">
+    <a href="#home" class="nav-logo" id="nav-logo">
+      <span class="logo-hey">Hey</span><span class="logo-khushi">Khushi</span><span class="logo-dot">.</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#content">Content</a>
+      <a href="#games">Games</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#connect">Connect</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#content">Content</a>
+    <a href="#games">Games</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#connect">Connect</a>
+  </nav>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="home">
+      <div class="hero-mesh"></div>
+      <div class="hero-content">
+        <div class="hero-badge glass-pill">
+          <span class="pulse-dot"></span>
+          Available for Collaborations
+        </div>
+        <h1 class="hero-title">
+          Hey, I'm <span class="text-shimmer">Khushi</span> ✨
+        </h1>
+        <p class="hero-tagline" id="channel-description">Creating a life I love 🐒</p>
+        <p class="hero-roles">Content Creator &nbsp;·&nbsp; Gamer &nbsp;·&nbsp; Streamer</p>
+
+        <div class="hero-stats glass-card" id="hero-stats-row">
+          <div class="h-stat">
+            <span class="h-stat-val" id="yt-subscribers">—</span>
+            <span class="h-stat-lbl">Subscribers</span>
+          </div>
+          <div class="h-stat-sep"></div>
+          <div class="h-stat">
+            <span class="h-stat-val" id="yt-video-count">—</span>
+            <span class="h-stat-lbl">Videos</span>
+          </div>
+          <div class="h-stat-sep"></div>
+          <div class="h-stat">
+            <span class="h-stat-val" id="yt-view-count">—</span>
+            <span class="h-stat-lbl">Total Views</span>
+          </div>
+        </div>
+
+        <div class="hero-ctas">
+          <a href="https://www.youtube.com/@HeyKhushilive" target="_blank" rel="noopener" class="btn btn-glow" id="cta-youtube">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Watch on YouTube
+          </a>
+          <a href="https://www.instagram.com/heykhushiyt" target="_blank" rel="noopener" class="btn btn-glass" id="cta-instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Follow on Insta
+          </a>
+        </div>
+      </div>
+      <div class="scroll-cue">
+        <div class="scroll-mouse"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section class="section" id="about">
+      <div class="section-inner">
+        <div class="about-grid">
+          <div class="about-img-wrap reveal-left">
+            <div class="about-img glass-card">
+              <img src="assets/about.png" alt="Khushi" id="channel-avatar">
+            </div>
+          </div>
+          <div class="about-body reveal-right">
+            <h2 class="section-label">Khushi's Story</h2>
+            <h3 class="about-headline">A gamer who just wants to have fun 🎮</h3>
+            <p id="about-description">
+              Hey there! I'm Khushi, a full-time content creator who's passionate about gaming and building 
+              a chill community. Whether I'm streaming Valorant clutches, cruising through GTA Roleplay, 
+              or getting eliminated in Fall Guys — it's always about the vibes, not the wins!
+            </p>
+            <p>
+              I believe that gaming is more than just playing — it's about connecting with awesome people, 
+              sharing laughs, and creating memories. My streams are a safe space for everyone to hang out, 
+              chat, and have a good time. ✨
+            </p>
+            <div class="about-tags">
+              <span class="tag-pill">🎮 Gamer</span>
+              <span class="tag-pill">📹 Creator</span>
+              <span class="tag-pill">🔴 Streamer</span>
+              <span class="tag-pill">💜 Community</span>
+            </div>
+            <div class="about-metrics">
+              <div class="metric glass-card reveal delay-1">
+                <span class="metric-val" id="stat-subscribers">—</span>
+                <span class="metric-lbl">Subscribers</span>
+              </div>
+              <div class="metric glass-card reveal delay-2">
+                <span class="metric-val" id="stat-videos">—</span>
+                <span class="metric-lbl">Videos</span>
+              </div>
+              <div class="metric glass-card reveal delay-3">
+                <span class="metric-val" id="stat-views">—</span>
+                <span class="metric-lbl">Views</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FEATURED CONTENT (6 items bento) ========== -->
+    <section class="section section-alt" id="content">
+      <div class="section-inner">
+        <h2 class="section-label reveal">Featured Content</h2>
+        <p class="section-desc reveal delay-1">The best streams, gaming highlights, and community moments — fetched live.</p>
+
+        <div class="bento-grid" id="videos-grid">
+          <div class="bento-card bento-hero skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+        </div>
+
+        <div class="section-cta reveal">
+          <a href="https://www.youtube.com/@HeyKhushilive" target="_blank" rel="noopener" class="btn btn-glass">
+            View All on YouTube →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== GAMES I PLAY ========== -->
+    <section class="section" id="games">
+      <div class="section-inner">
+        <h2 class="section-label reveal">Games I Play</h2>
+        <p class="section-desc reveal delay-1">From competitive shooters to hilarious party games — if it's fun, I'm playing it!</p>
+
+        <div class="games-row">
+          <!-- Valorant -->
+          <div class="game-tile glass-card reveal delay-1" id="game-valorant">
+            <div class="game-logo">
+              <svg viewBox="0 0 100 100" fill="none"><path d="M10 80L50 20l10 15-30 45H10z" fill="#ff4655"/><path d="M60 35l10 15H50l10-15z" fill="#ff4655"/><circle cx="78" cy="70" r="8" fill="#ff4655"/></svg>
+            </div>
+            <h4>Valorant</h4>
+            <span>Tactical Shooter</span>
+          </div>
+          <!-- GTA V -->
+          <div class="game-tile glass-card reveal delay-2" id="game-gta">
+            <div class="game-logo">
+              <svg viewBox="0 0 100 100" fill="none"><text x="50" y="68" text-anchor="middle" font-size="56" font-weight="900" font-family="Arial Black,sans-serif" fill="#ff9f43">V</text><rect x="15" y="75" width="70" height="6" rx="3" fill="#ff9f43" opacity=".4"/></svg>
+            </div>
+            <h4>GTA V</h4>
+            <span>Roleplay & Chaos</span>
+          </div>
+          <!-- Fall Guys -->
+          <div class="game-tile glass-card reveal delay-3" id="game-fallguys">
+            <div class="game-logo">
+              <svg viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="42" rx="22" ry="25" fill="#ff69b4"/><ellipse cx="42" cy="38" rx="5" ry="6" fill="#fff"/><ellipse cx="58" cy="38" rx="5" ry="6" fill="#fff"/><ellipse cx="42" cy="39" rx="3" ry="3.5" fill="#222"/><ellipse cx="58" cy="39" rx="3" ry="3.5" fill="#222"/><rect x="38" y="65" width="8" height="18" rx="4" fill="#ff69b4"/><rect x="54" y="65" width="8" height="18" rx="4" fill="#ff69b4"/></svg>
+            </div>
+            <h4>Fall Guys</h4>
+            <span>Party Madness</span>
+          </div>
+          <!-- Among Us -->
+          <div class="game-tile glass-card reveal delay-4" id="game-amongus">
+            <div class="game-logo">
+              <svg viewBox="0 0 100 100" fill="none"><path d="M35 25c0-8 7-15 17-15s17 7 17 15v40c0 10-8 18-17 18s-17-8-17-18V25z" fill="#c51111"/><rect x="28" y="35" width="18" height="22" rx="6" fill="#5bc0de" opacity=".9"/><path d="M55 70c0 5 4 12 10 12s10-5 10-12v-20c0-4-4-8-10-8s-10 4-10 8v20z" fill="#c51111"/></svg>
+            </div>
+            <h4>Among Us</h4>
+            <span>Who's the Imposter?</span>
+          </div>
+          <!-- Fortnite -->
+          <div class="game-tile glass-card reveal delay-5" id="game-fortnite">
+            <div class="game-logo">
+              <svg viewBox="0 0 100 100" fill="none"><path d="M30 80V20h40v14H46v10h18v14H46v22H30z" fill="#9d4dfa"/></svg>
+            </div>
+            <h4>Fortnite</h4>
+            <span>Battle Royale</span>
+          </div>
+          <!-- Minecraft -->
+          <div class="game-tile glass-card reveal delay-6" id="game-minecraft">
+            <div class="game-logo">
+              <svg viewBox="0 0 100 100" fill="none"><rect x="15" y="15" width="70" height="70" rx="4" fill="#5cb85c"/><rect x="25" y="30" width="16" height="16" rx="2" fill="#222"/><rect x="59" y="30" width="16" height="16" rx="2" fill="#222"/><rect x="38" y="52" width="24" height="10" rx="2" fill="#222"/><rect x="42" y="62" width="6" height="8" rx="1" fill="#222"/><rect x="52" y="62" width="6" height="8" rx="1" fill="#222"/></svg>
+            </div>
+            <h4>Minecraft</h4>
+            <span>Build & Explore</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== GALLERY ========== -->
+    <section class="section section-alt" id="gallery">
+      <div class="section-inner">
+        <h2 class="section-label reveal">Gallery</h2>
+        <p class="section-desc reveal delay-1">Moments from the stream, behind the scenes, and more.</p>
+        <!-- Gallery grid — first 3 are local assets, rest filled dynamically from YT thumbnails -->
+        <div class="gallery-mosaic" id="gallery-grid">
+          <div class="gal-item gal-tall reveal delay-1">
+            <img src="assets/gallery-stream.png" alt="Stream Setup">
+          </div>
+          <div class="gal-item reveal delay-2">
+            <img src="assets/gallery-gaming.png" alt="Gaming">
+          </div>
+          <div class="gal-item reveal delay-3">
+            <img src="assets/gallery-desk.png" alt="Creator Desk">
+          </div>
+          <!-- These will be replaced/supplemented by YT thumbnails via JS -->
+          <div class="gal-item gal-wide reveal delay-4" id="gal-yt-1">
+            <img src="assets/gallery-vibes.png" alt="Late Night Vibes">
+          </div>
+          <div class="gal-item reveal delay-5" id="gal-yt-2">
+            <img src="assets/about.png" alt="Content Creator">
+          </div>
+          <div class="gal-item reveal delay-6" id="gal-yt-3">
+            <img src="assets/hero-bg.png" alt="Journey">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== LET'S CONNECT ========== -->
+    <section class="section" id="connect">
+      <div class="section-inner connect-inner">
+        <h2 class="section-label reveal" style="text-align:center">Let's Connect</h2>
+        <p class="section-desc reveal delay-1" style="text-align:center;margin-left:auto;margin-right:auto">Catch me live, follow the journey, or reach out for collabs!</p>
+
+        <div class="connect-bento">
+          <a href="https://www.youtube.com/@HeyKhushilive" target="_blank" rel="noopener" class="conn-card conn-yt glass-card reveal delay-1" id="connect-youtube">
+            <div class="conn-card-bg"></div>
+            <div class="conn-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <h4>YouTube</h4>
+            <p>Watch live streams, gaming content & community hangouts</p>
+            <span class="conn-cta">Subscribe →</span>
+          </a>
+          <a href="https://www.instagram.com/heykhushiyt" target="_blank" rel="noopener" class="conn-card conn-ig glass-card reveal delay-2" id="connect-instagram">
+            <div class="conn-card-bg"></div>
+            <div class="conn-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </div>
+            <h4>Instagram</h4>
+            <p>BTS, reels & daily vibes</p>
+            <span class="conn-cta">Follow →</span>
+          </a>
+          <a href="#" class="conn-card conn-dc glass-card reveal delay-3" id="connect-discord">
+            <div class="conn-card-bg"></div>
+            <div class="conn-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            </div>
+            <h4>Discord</h4>
+            <p>Join the crew</p>
+            <span class="conn-cta">Join →</span>
+          </a>
+          <a href="mailto:heykhushi@isupreme.in" class="conn-card conn-em glass-card reveal delay-4" id="connect-email">
+            <div class="conn-card-bg"></div>
+            <div class="conn-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 7l10 7 10-7"/></svg>
+            </div>
+            <h4>Business</h4>
+            <p>Collabs & inquiries</p>
+            <span class="conn-cta">Email →</span>
+          </a>
+        </div>
+
+        <div class="contact-glass glass-card reveal">
+          <h3>📬 Business Inquiries</h3>
+          <p>Email: <a href="mailto:heykhushi@isupreme.in">heykhushi@isupreme.in</a></p>
+          <p>Managed by: <a href="https://www.instagram.com/finisherhere" target="_blank" rel="noopener">@finisherhere</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== iSUPREME ORG SECTION ========== -->
+    <section class="section section-alt" id="isupreme">
+      <div class="section-inner">
+        <div class="org-block reveal">
+          <div class="org-header">
+            <div class="org-logo-wrap">
+              <!-- Logo image: will use file if present, otherwise CSS text logo -->
+              <img src="assets/isupreme-logo.png" alt="iSUPREME" class="org-logo-img" id="org-logo-img"
+                   onerror="this.style.display='none';document.getElementById('org-logo-text').style.display='flex'">
+              <div class="org-logo-text" id="org-logo-text" style="display:none">
+                <span class="org-i">i</span><span class="org-supreme">SUPREME</span>
+              </div>
+            </div>
+            <span class="org-badge glass-pill">Official Management</span>
+          </div>
+
+          <div class="org-grid">
+            <div class="org-about">
+              <h2 class="org-title">Managed by <span class="text-shimmer">iSUPREME</span></h2>
+              <p>Khushi is proudly represented by <strong>iSUPREME Gaming</strong> — one of India's leading esports and creator management agencies. Based out of India, iSUPREME works at the intersection of gaming, content creation, and brand partnerships.</p>
+              <p>From talent management and influencer marketing to 3D/CGI production and creative strategy, iSUPREME builds sustainable ecosystems for creators and competitive players in the Indian gaming space.</p>
+            </div>
+
+            <div class="org-services">
+              <div class="org-pill glass-card">
+                <span>🎯</span>
+                <div><strong>Talent Management</strong><br><small>Personal brand growth & partnerships</small></div>
+              </div>
+              <div class="org-pill glass-card">
+                <span>🎨</span>
+                <div><strong>Creative Services</strong><br><small>3D/CGI, advertising & marketing</small></div>
+              </div>
+              <div class="org-pill glass-card">
+                <span>🏆</span>
+                <div><strong>Esports</strong><br><small>Competitive teams & events</small></div>
+              </div>
+              <div class="org-pill glass-card">
+                <span>🤝</span>
+                <div><strong>Brand Collabs</strong><br><small>Influencer campaigns & strategy</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="org-footer">
+            <a href="https://www.instagram.com/isupreme.in" target="_blank" rel="noopener" class="btn btn-glass">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+              @isupreme.in
+            </a>
+            <a href="mailto:heykhushi@isupreme.in" class="btn btn-glow">Get in Touch</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer-socials">
+      <a href="https://www.youtube.com/@HeyKhushilive" target="_blank" rel="noopener" aria-label="YouTube" class="glass-card">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/heykhushiyt" target="_blank" rel="noopener" aria-label="Instagram" class="glass-card">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+    </div>
+    <p>© 2026 HeyKhushi — All rights reserved.</p>
+    <p class="credits">Managed by <a href="https://www.instagram.com/finisherhere" target="_blank" rel="noopener">@finisherhere</a> · CC <a href="https://www.instagram.com/isupreme.in" target="_blank" rel="noopener">@isupreme.in</a></p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+    <img src="" alt="" id="lightbox-img">
+  </div>
+
+  <!-- Main interactions -->
+  <script src="script.js"></script>
+
+  <!-- Three.js Living Rose — scroll-controlled rotation -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+    const canvas = document.getElementById('flower-canvas');
+    if (!canvas) throw new Error('No flower canvas');
+
+    // ── CONFIG ──
+    const COUNT = 12000;           // lower for perf as background
+    const SPEED = 1;
+    const PETAL_SIZE = 88.8;
+    const PETAL_COUNT = 7.2;
+    const BLOOM_FACTOR = 0.87;
+
+    // ── SCENE ──
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.012);
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.set(0, 60, 100);   // start facing slightly upward
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+
+    // ── POST-PROCESSING ──
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.2, 0.4, 0
+    );
+    bloom.strength = 1.2;
+    bloom.radius = 0.35;
+    bloom.threshold = 0;
+    composer.addPass(bloom);
+
+    // ── INSTANCED MESH ──
+    const geo = new THREE.TetrahedronGeometry(0.25);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const mesh = new THREE.InstancedMesh(geo, mat, COUNT);
+    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    scene.add(mesh);
+
+    // ── DATA ──
+    const dummy = new THREE.Object3D();
+    const color = new THREE.Color();
+    const target = new THREE.Vector3();
+    const positions = [];
+    for (let i = 0; i < COUNT; i++) {
+      positions.push(new THREE.Vector3(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100
+      ));
+      mesh.setColorAt(i, color.setHex(0x00ff88));
+    }
+
+    // ── SCROLL TRACKING ──
+    let scrollFraction = 0;  // 0 at top, increases as you scroll down
+    const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
+
+    window.addEventListener('scroll', () => {
+      const ms = maxScroll();
+      scrollFraction = ms > 0 ? window.scrollY / ms : 0;
+    }, { passive: true });
+
+    // ── ANIMATION ──
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime() * SPEED;
+
+      // Scroll-driven rotation: Y-axis only, clockwise as user scrolls
+      const scrollAngle = scrollFraction * Math.PI * 2;   // full 360° over page
+      mesh.rotation.x = -Math.PI * 0.3;                   // fixed tilt (face upward)
+      mesh.rotation.y = scrollAngle;                       // only Y rotates with scroll
+      mesh.rotation.z = 0;                                 // locked
+
+      // Camera: fixed angle, gentle drift only
+      camera.position.x = Math.sin(time * 0.06) * 5;
+      camera.position.y = 60;
+      camera.position.z = 100;
+      camera.lookAt(0, 0, 0);
+
+      for (let i = 0; i < COUNT; i++) {
+        const u = i / COUNT;
+        const a = u * 31.4159265359;
+        const t = time * 0.35;
+        const k = PETAL_COUNT;
+        const rose = Math.cos(k * a);
+        const r = PETAL_SIZE * (0.15 + BLOOM_FACTOR * Math.abs(rose));
+        const layer = (u - 0.5) * 2.0;
+        const twist = a + t + layer * 1.2;
+        const spread = 1.0 - 0.45 * Math.abs(layer);
+        const x = r * spread * Math.cos(twist);
+        const z = r * spread * Math.sin(twist);
+        const y = PETAL_SIZE * 0.35 * layer + PETAL_SIZE * 0.12 * rose * Math.sin(a * 0.5 + t);
+
+        target.set(x, y, z);
+
+        const hue = (0.93 + 0.04 * rose + 0.02 * Math.sin(twist)) % 1;
+        const sat = 0.85 + 0.15 * Math.abs(rose);
+        const lit = 0.42 + 0.25 * Math.abs(rose);
+        color.setHSL(hue < 0 ? hue + 1 : hue, sat, lit);
+
+        positions[i].lerp(target, 0.1);
+        dummy.position.copy(positions[i]);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+        mesh.setColorAt(i, color);
+      }
+
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.instanceColor.needsUpdate = true;
+      composer.render();
+    }
+
+    animate();
+
+    // ── RESIZE ──
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
