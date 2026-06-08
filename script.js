@@ -32,9 +32,70 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(followRing);
     })();
 
-    document.querySelectorAll('a, button, .btn, .bento-card, .game-tile, .gal-item, .conn-card, .metric').forEach(el => {
+    document.querySelectorAll('a, button, .btn, .bento-card, .game-tile, .gal-item, .conn-card, .metric, .hero-fcard').forEach(el => {
       el.addEventListener('mouseenter', () => { dot.classList.add('hover'); ring.classList.add('hover'); });
       el.addEventListener('mouseleave', () => { dot.classList.remove('hover'); ring.classList.remove('hover'); });
+    });
+  }
+
+  // ── TYPEWRITER EFFECT ──
+  const twEl = document.getElementById('tw-text');
+  if (twEl) {
+    const roles = ['Content Creator', 'Gamer', 'Streamer', 'Community Builder', 'Valorant Lover'];
+    let roleIdx = 0, charIdx = 0, isDeleting = false;
+
+    function typewriter() {
+      const current = roles[roleIdx];
+      if (!isDeleting) {
+        twEl.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
+          isDeleting = true;
+          setTimeout(typewriter, 2000); // pause before deleting
+          return;
+        }
+        setTimeout(typewriter, 80);
+      } else {
+        twEl.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+          isDeleting = false;
+          roleIdx = (roleIdx + 1) % roles.length;
+          setTimeout(typewriter, 400); // pause before next role
+          return;
+        }
+        setTimeout(typewriter, 40);
+      }
+    }
+    setTimeout(typewriter, 1200); // initial delay
+  }
+
+  // ── HERO MOUSE PARALLAX ──
+  const heroSection = document.getElementById('home');
+  if (heroSection && !isTouchDevice) {
+    const heroLeft = heroSection.querySelector('.hero-left');
+    const heroRight = heroSection.querySelector('.hero-right');
+    const heroRing = heroSection.querySelector('.hero-ring');
+    const orbF1 = heroSection.querySelector('.orb-f1');
+    const orbF2 = heroSection.querySelector('.orb-f2');
+
+    heroSection.addEventListener('mousemove', e => {
+      const rect = heroSection.getBoundingClientRect();
+      const cx = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 to 0.5
+      const cy = (e.clientY - rect.top) / rect.height - 0.5;
+
+      if (heroLeft) heroLeft.style.transform = `translate(${cx * -12}px, ${cy * -8}px)`;
+      if (heroRight) heroRight.style.transform = `translate(${cx * 16}px, ${cy * 12}px)`;
+      if (heroRing) heroRing.style.marginLeft = `${cx * 25}px`;
+      if (orbF1) orbF1.style.transform = `translate(${cx * -30}px, ${cy * -20}px)`;
+      if (orbF2) orbF2.style.transform = `translate(${cx * 20}px, ${cy * 30}px)`;
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+      [heroLeft, heroRight, orbF1, orbF2].forEach(el => {
+        if (el) el.style.transform = '';
+      });
+      if (heroRing) heroRing.style.marginLeft = '';
     });
   }
 
@@ -268,38 +329,50 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ch.title) document.title = `${ch.title} — Content Creator & Gamer`;
   }
 
-  function renderVideos(latest, popular) {
+  // ── FEATURED STREAMS (hardcoded picks) ──
+  const FEATURED_IDS = ['sL-7Y0xbyds', '2LRpFNfo4Ek', 'RyKZ3ampPHk', 'BILDclLrclI'];
+
+  async function fetchFeaturedStreams() {
+    try {
+      const ids = FEATURED_IDS.join(',');
+      const r = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${ids}&key=${YT_API_KEY}`);
+      const d = await r.json();
+      if (!d.items) return [];
+      return d.items.map(v => ({
+        id: v.id,
+        title: v.snippet.title,
+        thumb: v.snippet.thumbnails.maxres?.url || v.snippet.thumbnails.high?.url || v.snippet.thumbnails.medium?.url,
+        date: v.snippet.publishedAt,
+        views: v.statistics.viewCount || '0',
+      }));
+    } catch (e) { console.error('Featured fetch error:', e); return []; }
+  }
+
+  function renderFeaturedStreams(streams) {
     const grid = document.getElementById('videos-grid');
     if (!grid) return;
     grid.innerHTML = '';
 
-    // Dedupe and merge, max 6
-    const seen = new Set();
-    const all = [];
-    [...latest, ...popular].forEach(v => {
-      if (!seen.has(v.id) && all.length < 6) { seen.add(v.id); all.push(v); }
-    });
-
-    if (!all.length) {
-      grid.innerHTML = '<p style="color:var(--text3);text-align:center;grid-column:1/-1;padding:48px">Could not load videos. Visit the channel directly.</p>';
+    if (!streams.length) {
+      grid.innerHTML = '<p style="color:var(--text3);text-align:center;grid-column:1/-1;padding:48px">Could not load streams. Visit the channel directly.</p>';
       return;
     }
 
-    all.forEach((v, i) => {
+    streams.forEach((v, i) => {
       const a = document.createElement('a');
       a.href = `https://www.youtube.com/watch?v=${v.id}`;
       a.target = '_blank'; a.rel = 'noopener';
-      a.className = `bento-card reveal${i === 0 ? ' bento-hero' : ''}`;
-      const dur = fmtDur(v.dur);
+      a.className = `content-card glass-card reveal delay-${i + 1}`;
       a.innerHTML = `
-        <div class="b-thumb">
+        <div class="cc-thumb">
           <img src="${v.thumb}" alt="${v.title}" loading="lazy">
-          ${dur ? `<span class="b-dur">${dur}</span>` : ''}
-          <div class="b-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="cc-views">👁 ${fmtCount(v.views)} views</span>
+          <div class="cc-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="cc-live-badge">STREAM</span>
         </div>
-        <div class="b-info">
+        <div class="cc-info">
           <h4>${v.title}</h4>
-          <div class="b-meta"><span>${fmtCount(v.views)} views</span><span>·</span><span>${timeAgo(v.date)}</span></div>
+          <div class="cc-meta"><span>🔴 Live Stream</span><span>·</span><span>${timeAgo(v.date)}</span></div>
         </div>`;
       grid.appendChild(a);
     });
@@ -311,13 +384,12 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const id = await resolveChannel();
       if (!id) return;
-      const [ch, latest, popular] = await Promise.all([
+      const [ch, featured] = await Promise.all([
         fetchChannel(id),
-        fetchVideos(id, 'date', 6),
-        fetchVideos(id, 'viewCount', 6),
+        fetchFeaturedStreams(),
       ]);
       updateChannelUI(ch);
-      renderVideos(latest, popular);
+      renderFeaturedStreams(featured);
     } catch (e) { console.error('YT init error:', e); }
   }
 

@@ -49,6 +49,7 @@
     <nav class="nav-links" id="nav-links">
       <a href="#home" class="active">Home</a>
       <a href="#about">About</a>
+      <a href="#journey">Journey</a>
       <a href="#content">Content</a>
       <a href="#games">Games</a>
       <a href="#gallery">Gallery</a>
@@ -64,6 +65,7 @@
   <nav class="mobile-nav" id="mobile-nav">
     <a href="#home">Home</a>
     <a href="#about">About</a>
+    <a href="#journey">Journey</a>
     <a href="#content">Content</a>
     <a href="#games">Games</a>
     <a href="#gallery">Gallery</a>
@@ -74,48 +76,103 @@
     <!-- ========== HERO ========== -->
     <section class="hero" id="home">
       <div class="hero-mesh"></div>
-      <div class="hero-content">
-        <div class="hero-badge glass-pill">
-          <span class="pulse-dot"></span>
-          Available for Collaborations
-        </div>
-        <h1 class="hero-title">
-          Hey, I'm <span class="text-shimmer">Khushi</span> ✨
-        </h1>
-        <p class="hero-tagline" id="channel-description">Creating a life I love 🐒</p>
-        <p class="hero-roles">Content Creator &nbsp;·&nbsp; Gamer &nbsp;·&nbsp; Streamer</p>
+      <!-- Animated gradient ring behind hero -->
+      <div class="hero-ring" aria-hidden="true"></div>
+      <!-- Floating decorative orbs that follow mouse -->
+      <div class="hero-float-orb orb-f1" aria-hidden="true"></div>
+      <div class="hero-float-orb orb-f2" aria-hidden="true"></div>
 
-        <div class="hero-stats glass-card" id="hero-stats-row">
-          <div class="h-stat">
-            <span class="h-stat-val" id="yt-subscribers">—</span>
-            <span class="h-stat-lbl">Subscribers</span>
+      <div class="hero-split">
+        <!-- LEFT: Text content -->
+        <div class="hero-left" data-parallax="0.04">
+          <div class="hero-badge glass-pill">
+            <span class="pulse-dot"></span>
+            Available for Collaborations
           </div>
-          <div class="h-stat-sep"></div>
-          <div class="h-stat">
-            <span class="h-stat-val" id="yt-video-count">—</span>
-            <span class="h-stat-lbl">Videos</span>
+          <h1 class="hero-title">
+            <span class="hero-greeting">Hey, I'm</span>
+            <span class="hero-name" id="hero-name">Khushi</span>
+          </h1>
+          <p class="hero-tagline" id="channel-description">Creating a life I love 🐒</p>
+          <!-- Typewriter cycling roles -->
+          <div class="hero-typewriter">
+            <span class="tw-static">I am a&nbsp;</span>
+            <span class="tw-text" id="tw-text"></span>
+            <span class="tw-cursor">|</span>
           </div>
-          <div class="h-stat-sep"></div>
-          <div class="h-stat">
-            <span class="h-stat-val" id="yt-view-count">—</span>
-            <span class="h-stat-lbl">Total Views</span>
+
+          <div class="hero-ctas">
+            <a href="https://www.youtube.com/@HeyKhushilive" target="_blank" rel="noopener" class="btn btn-glow" id="cta-youtube">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              Watch on YouTube
+            </a>
+            <a href="https://www.instagram.com/heykhushiyt" target="_blank" rel="noopener" class="btn btn-glass" id="cta-instagram">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+              Follow on Insta
+            </a>
           </div>
         </div>
 
-        <div class="hero-ctas">
-          <a href="https://www.youtube.com/@HeyKhushilive" target="_blank" rel="noopener" class="btn btn-glow" id="cta-youtube">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            Watch on YouTube
-          </a>
-          <a href="https://www.instagram.com/heykhushiyt" target="_blank" rel="noopener" class="btn btn-glass" id="cta-instagram">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12s.014 3.668.072 4.948c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-            Follow on Insta
-          </a>
+        <!-- RIGHT: Floating stat cards -->
+        <div class="hero-right" data-parallax="-0.03">
+          <div class="hero-card-stack">
+            <div class="hero-fcard glass-card hc-1">
+              <span class="hc-icon">👥</span>
+              <div class="hc-data">
+                <span class="hc-val" id="yt-subscribers">—</span>
+                <span class="hc-lbl">Subscribers</span>
+              </div>
+            </div>
+            <div class="hero-fcard glass-card hc-2">
+              <span class="hc-icon">🎬</span>
+              <div class="hc-data">
+                <span class="hc-val" id="yt-video-count">—</span>
+                <span class="hc-lbl">Videos</span>
+              </div>
+            </div>
+            <div class="hero-fcard glass-card hc-3">
+              <span class="hc-icon">👁</span>
+              <div class="hc-data">
+                <span class="hc-val" id="yt-view-count">—</span>
+                <span class="hc-lbl">Total Views</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
       <div class="scroll-cue">
-        <div class="scroll-mouse"></div>
-        <span>Scroll</span>
+        <div class="scroll-chevrons">
+          <svg width="20" height="12" viewBox="0 0 20 12"><path d="M1 1l9 9 9-9" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          <svg width="20" height="12" viewBox="0 0 20 12"><path d="M1 1l9 9 9-9" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </div>
+        <span>Explore</span>
+      </div>
+
+      <!-- Scrolling marquee strip -->
+      <div class="hero-marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>🎮 Valorant</span><span>·</span>
+          <span>🔫 GTA V RP</span><span>·</span>
+          <span>🫘 Fall Guys</span><span>·</span>
+          <span>🎤 Live Streams</span><span>·</span>
+          <span>💜 Community</span><span>·</span>
+          <span>🔴 YouTube</span><span>·</span>
+          <span>📸 Instagram</span><span>·</span>
+          <span>🎯 Among Us</span><span>·</span>
+          <span>⛏ Minecraft</span><span>·</span>
+          <span>🏆 Fortnite</span><span>·</span>
+          <span>🎮 Valorant</span><span>·</span>
+          <span>🔫 GTA V RP</span><span>·</span>
+          <span>🫘 Fall Guys</span><span>·</span>
+          <span>🎤 Live Streams</span><span>·</span>
+          <span>💜 Community</span><span>·</span>
+          <span>🔴 YouTube</span><span>·</span>
+          <span>📸 Instagram</span><span>·</span>
+          <span>🎯 Among Us</span><span>·</span>
+          <span>⛏ Minecraft</span><span>·</span>
+          <span>🏆 Fortnite</span><span>·</span>
+        </div>
       </div>
     </section>
 
@@ -166,19 +223,83 @@
       </div>
     </section>
 
-    <!-- ========== FEATURED CONTENT (6 items bento) ========== -->
-    <section class="section section-alt" id="content">
+    <!-- ========== JOURNEY TIMELINE ========== -->
+    <section class="section section-alt" id="journey">
       <div class="section-inner">
-        <h2 class="section-label reveal">Featured Content</h2>
-        <p class="section-desc reveal delay-1">The best streams, gaming highlights, and community moments — fetched live.</p>
+        <h2 class="section-label reveal" style="text-align:center">The Journey</h2>
+        <p class="section-desc reveal delay-1" style="text-align:center;margin-left:auto;margin-right:auto">From a hobby gamer to a full-time content creator — every step of the way.</p>
 
-        <div class="bento-grid" id="videos-grid">
-          <div class="bento-card bento-hero skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
-          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
-          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
-          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
-          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
-          <div class="bento-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+        <div class="timeline">
+          <div class="tl-line" aria-hidden="true"></div>
+
+          <div class="tl-item tl-left reveal-left">
+            <div class="tl-dot"></div>
+            <div class="tl-card glass-card">
+              <span class="tl-year">2020</span>
+              <h4>The Beginning</h4>
+              <p>Started gaming casually during lockdown, discovering a passion for streaming and connecting with other gamers online.</p>
+            </div>
+          </div>
+
+          <div class="tl-item tl-right reveal-right delay-1">
+            <div class="tl-dot"></div>
+            <div class="tl-card glass-card">
+              <span class="tl-year">2021</span>
+              <h4>First Stream</h4>
+              <p>Went live for the first time on YouTube. Nervously played Valorant while chatting with the first few viewers who showed up.</p>
+            </div>
+          </div>
+
+          <div class="tl-item tl-left reveal-left delay-2">
+            <div class="tl-dot"></div>
+            <div class="tl-card glass-card">
+              <span class="tl-year">2022</span>
+              <h4>Community Growing</h4>
+              <p>Streams started gaining traction. Built a loyal community of regulars who showed up for every stream. The vibes were immaculate.</p>
+            </div>
+          </div>
+
+          <div class="tl-item tl-right reveal-right delay-3">
+            <div class="tl-dot"></div>
+            <div class="tl-card glass-card">
+              <span class="tl-year">2023</span>
+              <h4>Going Full-Time</h4>
+              <p>Made the leap to full-time content creation. Joined iSUPREME Gaming org for professional management and brand partnerships.</p>
+            </div>
+          </div>
+
+          <div class="tl-item tl-left reveal-left delay-4">
+            <div class="tl-dot"></div>
+            <div class="tl-card glass-card">
+              <span class="tl-year">2024</span>
+              <h4>Level Up</h4>
+              <p>Expanded to multiple games, collaborations with fellow creators, and growing the HeyKhushi brand beyond just gaming.</p>
+            </div>
+          </div>
+
+          <div class="tl-item tl-right reveal-right delay-5">
+            <div class="tl-dot"></div>
+            <div class="tl-card glass-card">
+              <span class="tl-year tl-now">Now</span>
+              <h4>Creating Every Day</h4>
+              <p>Streaming regularly, exploring new games, growing the community, and creating a life built around doing what I love. 🚀</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TOP STREAMS ========== -->
+    <section class="section" id="content">
+      <div class="section-inner">
+        <h2 class="section-label reveal">Top Streams</h2>
+        <p class="section-desc reveal delay-1">Most popular streams and gaming highlights — pulled live from YouTube.</p>
+
+        <div class="content-grid" id="videos-grid">
+          <div class="content-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="content-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="content-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
+          <div class="content-card skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>
         </div>
 
         <div class="section-cta reveal">
@@ -199,7 +320,7 @@
           <!-- Valorant -->
           <div class="game-tile glass-card reveal delay-1" id="game-valorant">
             <div class="game-logo">
-              <svg viewBox="0 0 100 100" fill="none"><path d="M10 80L50 20l10 15-30 45H10z" fill="#ff4655"/><path d="M60 35l10 15H50l10-15z" fill="#ff4655"/><circle cx="78" cy="70" r="8" fill="#ff4655"/></svg>
+              <svg viewBox="0 0 100 100" fill="none"><path d="M8 75L42 18c1-2 4-2 5 0l8 14c1 1 0 3-1 3H35L22 58h17l10-16 8 14-22 36c-1 2-4 2-5 0L8 75z" fill="#ff4655"/><circle cx="75" cy="65" r="10" fill="#ff4655"/></svg>
             </div>
             <h4>Valorant</h4>
             <span>Tactical Shooter</span>
@@ -207,7 +328,7 @@
           <!-- GTA V -->
           <div class="game-tile glass-card reveal delay-2" id="game-gta">
             <div class="game-logo">
-              <svg viewBox="0 0 100 100" fill="none"><text x="50" y="68" text-anchor="middle" font-size="56" font-weight="900" font-family="Arial Black,sans-serif" fill="#ff9f43">V</text><rect x="15" y="75" width="70" height="6" rx="3" fill="#ff9f43" opacity=".4"/></svg>
+              <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="12" width="80" height="76" rx="8" fill="#0a0e18" stroke="#f0c060" stroke-width="3"/><text x="50" y="70" text-anchor="middle" font-size="52" font-weight="900" font-family="Impact,sans-serif" fill="#f0c060">V</text><text x="50" y="30" text-anchor="middle" font-size="14" font-weight="700" font-family="Arial,sans-serif" fill="#f0c060" letter-spacing="6">GTA</text></svg>
             </div>
             <h4>GTA V</h4>
             <span>Roleplay & Chaos</span>
@@ -215,7 +336,7 @@
           <!-- Fall Guys -->
           <div class="game-tile glass-card reveal delay-3" id="game-fallguys">
             <div class="game-logo">
-              <svg viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="42" rx="22" ry="25" fill="#ff69b4"/><ellipse cx="42" cy="38" rx="5" ry="6" fill="#fff"/><ellipse cx="58" cy="38" rx="5" ry="6" fill="#fff"/><ellipse cx="42" cy="39" rx="3" ry="3.5" fill="#222"/><ellipse cx="58" cy="39" rx="3" ry="3.5" fill="#222"/><rect x="38" y="65" width="8" height="18" rx="4" fill="#ff69b4"/><rect x="54" y="65" width="8" height="18" rx="4" fill="#ff69b4"/></svg>
+              <svg viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="40" rx="24" ry="28" fill="#ff69b4"/><ellipse cx="50" cy="40" rx="18" ry="20" fill="#ffb6d9"/><ellipse cx="42" cy="36" rx="5" ry="6" fill="#fff"/><ellipse cx="58" cy="36" rx="5" ry="6" fill="#fff"/><circle cx="42" cy="37" r="3" fill="#1a1a2e"/><circle cx="58" cy="37" r="3" fill="#1a1a2e"/><rect x="36" y="66" width="10" height="20" rx="5" fill="#ff69b4"/><rect x="54" y="66" width="10" height="20" rx="5" fill="#ff69b4"/><ellipse cx="50" cy="50" rx="6" ry="3" fill="#ff69b4"/></svg>
             </div>
             <h4>Fall Guys</h4>
             <span>Party Madness</span>
@@ -223,7 +344,7 @@
           <!-- Among Us -->
           <div class="game-tile glass-card reveal delay-4" id="game-amongus">
             <div class="game-logo">
-              <svg viewBox="0 0 100 100" fill="none"><path d="M35 25c0-8 7-15 17-15s17 7 17 15v40c0 10-8 18-17 18s-17-8-17-18V25z" fill="#c51111"/><rect x="28" y="35" width="18" height="22" rx="6" fill="#5bc0de" opacity=".9"/><path d="M55 70c0 5 4 12 10 12s10-5 10-12v-20c0-4-4-8-10-8s-10 4-10 8v20z" fill="#c51111"/></svg>
+              <svg viewBox="0 0 100 100" fill="none"><path d="M38 20c-10 0-18 8-18 18v32c0 10 8 18 18 18h6V20h-6z" fill="#c51111"/><path d="M44 20h10c10 0 18 8 18 18v5c0 6-5 11-11 11h-7V20z" fill="#c51111"/><rect x="26" y="32" width="20" height="16" rx="8" fill="#5bc0de"/><path d="M54 60v18c0 5 4 10 10 10s10-5 10-10V60c0-4-4-8-10-8s-10 4-10 8z" fill="#c51111"/></svg>
             </div>
             <h4>Among Us</h4>
             <span>Who's the Imposter?</span>
@@ -231,7 +352,7 @@
           <!-- Fortnite -->
           <div class="game-tile glass-card reveal delay-5" id="game-fortnite">
             <div class="game-logo">
-              <svg viewBox="0 0 100 100" fill="none"><path d="M30 80V20h40v14H46v10h18v14H46v22H30z" fill="#9d4dfa"/></svg>
+              <svg viewBox="0 0 100 100" fill="none"><path d="M25 15h50v14H43v12h26v14H43v30H25V15z" fill="#9d4dfa"/><path d="M25 15h50v14H43v12h26v14H43v30H25V15z" fill="url(#fnGrad)"/><defs><linearGradient id="fnGrad" x1="25" y1="15" x2="75" y2="85" gradientUnits="userSpaceOnUse"><stop stop-color="#b57bff"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs></svg>
             </div>
             <h4>Fortnite</h4>
             <span>Battle Royale</span>
@@ -239,7 +360,7 @@
           <!-- Minecraft -->
           <div class="game-tile glass-card reveal delay-6" id="game-minecraft">
             <div class="game-logo">
-              <svg viewBox="0 0 100 100" fill="none"><rect x="15" y="15" width="70" height="70" rx="4" fill="#5cb85c"/><rect x="25" y="30" width="16" height="16" rx="2" fill="#222"/><rect x="59" y="30" width="16" height="16" rx="2" fill="#222"/><rect x="38" y="52" width="24" height="10" rx="2" fill="#222"/><rect x="42" y="62" width="6" height="8" rx="1" fill="#222"/><rect x="52" y="62" width="6" height="8" rx="1" fill="#222"/></svg>
+              <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="10" width="80" height="80" rx="4" fill="#5cb85c"/><rect x="10" y="10" width="80" height="40" fill="#6dd06d" rx="4"/><rect x="24" y="24" width="16" height="16" fill="#1a1a2e"/><rect x="60" y="24" width="16" height="16" fill="#1a1a2e"/><rect x="36" y="56" width="28" height="8" fill="#1a1a2e"/><rect x="36" y="64" width="8" height="12" fill="#1a1a2e"/><rect x="56" y="64" width="8" height="12" fill="#1a1a2e"/></svg>
             </div>
             <h4>Minecraft</h4>
             <span>Build & Explore</span>
@@ -420,7 +541,7 @@
 
     // ── CONFIG ──
     const COUNT = 12000;
-    const PETAL_SIZE = 70;             // smaller so it's further from frame
+    const PETAL_SIZE = 80;             // slightly larger for more presence
     const PETAL_COUNT = 7.2;
     const BLOOM_FACTOR = 0.87;
 
@@ -445,7 +566,7 @@
       new THREE.Vector2(window.innerWidth, window.innerHeight),
       1.0, 0.4, 0
     );
-    bloom.strength = 0.9;             // softer bloom for distant/dim look
+    bloom.strength = 1.0;             // balanced bloom for visibility
     bloom.radius = 0.3;
     bloom.threshold = 0;
     composer.addPass(bloom);
