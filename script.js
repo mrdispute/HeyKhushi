@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let YT_CHANNEL_ID = null;
 
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  let editorOpen = false; // Gallery editor state (used by lightbox guard)
 
   // ── CUSTOM CURSOR ──
   if (!isTouchDevice) {
@@ -25,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     (function followRing() {
-      rx += (mx - rx) * 0.14;
-      ry += (my - ry) * 0.14;
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
       ring.style.left = rx + 'px';
       ring.style.top = ry + 'px';
       requestAnimationFrame(followRing);
@@ -79,21 +80,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const orbF1 = heroSection.querySelector('.orb-f1');
     const orbF2 = heroSection.querySelector('.orb-f2');
 
+    // Set smooth transition for return-to-center
+    [heroLeft, heroRight, orbF1, orbF2].forEach(el => {
+      if (el) el.style.transition = 'transform .4s cubic-bezier(.4,0,.2,1)';
+    });
+
     heroSection.addEventListener('mousemove', e => {
       const rect = heroSection.getBoundingClientRect();
       const cx = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 to 0.5
       const cy = (e.clientY - rect.top) / rect.height - 0.5;
 
-      if (heroLeft) heroLeft.style.transform = `translate(${cx * -12}px, ${cy * -8}px)`;
-      if (heroRight) heroRight.style.transform = `translate(${cx * 16}px, ${cy * 12}px)`;
+      // Remove transition during active movement for responsiveness
+      [heroLeft, heroRight, orbF1, orbF2].forEach(el => {
+        if (el) el.style.transition = 'none';
+      });
+
+      if (heroLeft) heroLeft.style.transform = `translate3d(${cx * -12}px, ${cy * -8}px, 0)`;
+      if (heroRight) heroRight.style.transform = `translate3d(${cx * 16}px, ${cy * 12}px, 0)`;
       if (heroRing) heroRing.style.marginLeft = `${cx * 25}px`;
-      if (orbF1) orbF1.style.transform = `translate(${cx * -30}px, ${cy * -20}px)`;
-      if (orbF2) orbF2.style.transform = `translate(${cx * 20}px, ${cy * 30}px)`;
+      if (orbF1) orbF1.style.transform = `translate3d(${cx * -30}px, ${cy * -20}px, 0)`;
+      if (orbF2) orbF2.style.transform = `translate3d(${cx * 20}px, ${cy * 30}px, 0)`;
     });
 
     heroSection.addEventListener('mouseleave', () => {
+      // Re-enable smooth transitions for the return
       [heroLeft, heroRight, orbF1, orbF2].forEach(el => {
-        if (el) el.style.transform = '';
+        if (el) {
+          el.style.transition = 'transform .6s cubic-bezier(.4,0,.2,1)';
+          el.style.transform = '';
+        }
       });
       if (heroRing) heroRing.style.marginLeft = '';
     });
@@ -183,6 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.gal-item').forEach(item => {
     item.addEventListener('click', () => {
+      // Don't open lightbox when editor is active
+      if (editorOpen) return;
       const img = item.querySelector('img');
       lbImg.src = img.src;
       lbImg.alt = item.dataset.caption || '';
@@ -226,6 +243,379 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
   const metricsWrap = document.querySelector('.about-metrics');
   if (metricsWrap) statObs.observe(metricsWrap);
+
+  // ════════════════════════════════════════════
+  //  GALLERY EDITOR — Image Position & Upload
+  // ════════════════════════════════════════════
+
+  const STORAGE_KEY = 'heykhushi_gallery_positions';
+  const galItems = document.querySelectorAll('.gal-item[data-id]');
+  const editorPanel = document.getElementById('gal-editor-panel');
+  const editorCards = document.getElementById('gal-editor-cards');
+  const editFab = document.getElementById('gal-edit-fab');
+  const editorClose = document.getElementById('gal-editor-close');
+  const editorDone = document.getElementById('gal-editor-done');
+  const editorReset = document.getElementById('gal-editor-reset');
+
+  // Load saved positions from localStorage
+  function loadGallerySettings() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch { return {}; }
+  }
+
+  // Save positions to localStorage
+  function saveGallerySettings(settings) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+  }
+
+  // Apply saved positions to gallery images on page load
+  function applyGallerySettings() {
+    const settings = loadGallerySettings();
+    galItems.forEach(item => {
+      const id = item.dataset.id;
+      const img = item.querySelector('img');
+      if (!img) return;
+      const s = settings[id];
+      if (s) {
+        if (s.posX !== undefined && s.posY !== undefined) {
+          img.style.objectPosition = `${s.posX}% ${s.posY}%`;
+        }
+        if (s.src) {
+          img.src = s.src;
+          if (s.alt) img.alt = s.alt;
+        }
+      }
+    });
+  }
+
+  // Build the editor cards
+  function buildEditorCards() {
+    const settings = loadGallerySettings();
+    editorCards.innerHTML = '';
+
+    galItems.forEach((item, idx) => {
+      const id = item.dataset.id;
+      const img = item.querySelector('img');
+      if (!img) return;
+
+      const s = settings[id] || {};
+      const posX = s.posX !== undefined ? s.posX : 50;
+      const posY = s.posY !== undefined ? s.posY : 0; // default 'top'
+      const slotType = item.classList.contains('gal-tall') ? 'Tall' :
+                       item.classList.contains('gal-wide') ? 'Wide' : 'Standard';
+
+      const card = document.createElement('div');
+      card.className = 'gal-ecard';
+      card.innerHTML = `
+        <div class="gal-ecard-preview" data-target="${id}">
+          <img src="${img.src}" alt="${img.alt}" style="object-position:${posX}% ${posY}%">
+          <span class="drag-hint">↕ Drag to reposition</span>
+        </div>
+        <div class="gal-ecard-controls">
+          <div class="gal-ecard-label">
+            <span>${img.alt || 'Image ' + (idx + 1)}</span>
+            <span class="gal-slot">${slotType} · Slot ${idx + 1}</span>
+          </div>
+          <div class="gal-slider-row">
+            <label>X</label>
+            <input type="range" min="0" max="100" value="${posX}" data-axis="x" data-id="${id}">
+            <span class="gal-pos-val">${posX}%</span>
+          </div>
+          <div class="gal-slider-row">
+            <label>Y</label>
+            <input type="range" min="0" max="100" value="${posY}" data-axis="y" data-id="${id}">
+            <span class="gal-pos-val">${posY}%</span>
+          </div>
+          <label class="gal-upload-btn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Replace Image
+            <input type="file" accept="image/*" data-id="${id}">
+          </label>
+        </div>
+      `;
+      editorCards.appendChild(card);
+    });
+
+    // Attach slider events
+    editorCards.querySelectorAll('input[type="range"]').forEach(slider => {
+      slider.addEventListener('input', handleSliderChange);
+    });
+
+    // Attach drag events to previews
+    editorCards.querySelectorAll('.gal-ecard-preview').forEach(preview => {
+      setupDragReposition(preview);
+    });
+
+    // Attach file upload events
+    editorCards.querySelectorAll('input[type="file"]').forEach(input => {
+      input.addEventListener('change', handleFileUpload);
+    });
+  }
+
+  // Handle slider changes
+  function handleSliderChange(e) {
+    const slider = e.target;
+    const id = slider.dataset.id;
+    const axis = slider.dataset.axis;
+    const val = parseInt(slider.value);
+
+    // Update value display
+    slider.nextElementSibling.textContent = val + '%';
+
+    // Get both values
+    const card = slider.closest('.gal-ecard');
+    const xSlider = card.querySelector('[data-axis="x"]');
+    const ySlider = card.querySelector('[data-axis="y"]');
+    const posX = parseInt(xSlider.value);
+    const posY = parseInt(ySlider.value);
+
+    // Update preview image in editor
+    const previewImg = card.querySelector('.gal-ecard-preview img');
+    if (previewImg) previewImg.style.objectPosition = `${posX}% ${posY}%`;
+
+    // Update actual gallery image
+    const galItem = document.querySelector(`.gal-item[data-id="${id}"]`);
+    if (galItem) {
+      const galImg = galItem.querySelector('img');
+      if (galImg) galImg.style.objectPosition = `${posX}% ${posY}%`;
+    }
+
+    // Save
+    const settings = loadGallerySettings();
+    if (!settings[id]) settings[id] = {};
+    settings[id].posX = posX;
+    settings[id].posY = posY;
+    saveGallerySettings(settings);
+  }
+
+  // Drag to reposition in preview card
+  function setupDragReposition(preview) {
+    let dragging = false;
+    let startY = 0, startX = 0;
+    let startPosY = 0, startPosX = 0;
+
+    const getTouch = (e) => e.touches ? e.touches[0] : e;
+
+    const onStart = (e) => {
+      dragging = true;
+      const t = getTouch(e);
+      startX = t.clientX;
+      startY = t.clientY;
+      const img = preview.querySelector('img');
+      const pos = img.style.objectPosition || '50% 0%';
+      const parts = pos.split(/\s+/);
+      startPosX = parseFloat(parts[0]) || 50;
+      startPosY = parseFloat(parts[1]) || 0;
+      e.preventDefault();
+    };
+
+    const onMove = (e) => {
+      if (!dragging) return;
+      const t = getTouch(e);
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const rect = preview.getBoundingClientRect();
+
+      // Map pixel delta to percentage (invert for natural feel)
+      const newX = Math.max(0, Math.min(100, startPosX - (dx / rect.width) * 100));
+      const newY = Math.max(0, Math.min(100, startPosY - (dy / rect.height) * 100));
+
+      const img = preview.querySelector('img');
+      img.style.objectPosition = `${newX}% ${newY}%`;
+
+      // Update sliders
+      const id = preview.dataset.target;
+      const card = preview.closest('.gal-ecard');
+      const xSlider = card.querySelector('[data-axis="x"]');
+      const ySlider = card.querySelector('[data-axis="y"]');
+      xSlider.value = Math.round(newX);
+      ySlider.value = Math.round(newY);
+      xSlider.nextElementSibling.textContent = Math.round(newX) + '%';
+      ySlider.nextElementSibling.textContent = Math.round(newY) + '%';
+
+      // Live update gallery
+      const galItem = document.querySelector(`.gal-item[data-id="${id}"]`);
+      if (galItem) {
+        const galImg = galItem.querySelector('img');
+        if (galImg) galImg.style.objectPosition = `${newX}% ${newY}%`;
+      }
+
+      e.preventDefault();
+    };
+
+    const onEnd = () => {
+      if (!dragging) return;
+      dragging = false;
+
+      // Save final position
+      const id = preview.dataset.target;
+      const img = preview.querySelector('img');
+      const pos = img.style.objectPosition || '50% 0%';
+      const parts = pos.split(/\s+/);
+      const posX = Math.round(parseFloat(parts[0]) || 50);
+      const posY = Math.round(parseFloat(parts[1]) || 0);
+
+      const settings = loadGallerySettings();
+      if (!settings[id]) settings[id] = {};
+      settings[id].posX = posX;
+      settings[id].posY = posY;
+      saveGallerySettings(settings);
+    };
+
+    preview.addEventListener('mousedown', onStart);
+    preview.addEventListener('touchstart', onStart, { passive: false });
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchend', onEnd);
+  }
+
+  // Handle file upload
+  function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const id = e.target.dataset.id;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target.result;
+
+      // Update editor preview
+      const card = e.target.closest('.gal-ecard');
+      const previewImg = card.querySelector('.gal-ecard-preview img');
+      if (previewImg) previewImg.src = dataUrl;
+
+      // Update actual gallery
+      const galItem = document.querySelector(`.gal-item[data-id="${id}"]`);
+      if (galItem) {
+        const galImg = galItem.querySelector('img');
+        if (galImg) {
+          galImg.src = dataUrl;
+          // Reset position for new image
+          galImg.style.objectPosition = '50% 50%';
+        }
+      }
+
+      // Update sliders to center
+      const xSlider = card.querySelector('[data-axis="x"]');
+      const ySlider = card.querySelector('[data-axis="y"]');
+      if (xSlider) { xSlider.value = 50; xSlider.nextElementSibling.textContent = '50%'; }
+      if (ySlider) { ySlider.value = 50; ySlider.nextElementSibling.textContent = '50%'; }
+      if (previewImg) previewImg.style.objectPosition = '50% 50%';
+
+      // Save
+      const settings = loadGallerySettings();
+      if (!settings[id]) settings[id] = {};
+      settings[id].src = dataUrl;
+      settings[id].posX = 50;
+      settings[id].posY = 50;
+      saveGallerySettings(settings);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Toggle editor
+  function openEditor() {
+    editorOpen = true;
+    buildEditorCards();
+    editorPanel.classList.add('open');
+    editFab.classList.add('active');
+    galItems.forEach(item => item.classList.add('editing'));
+  }
+
+  function closeEditor() {
+    editorOpen = false;
+    editorPanel.classList.remove('open');
+    editFab.classList.remove('active');
+    galItems.forEach(item => item.classList.remove('editing'));
+  }
+
+  // ── ADMIN ACCESS CONTROL ──
+  // The edit button is hidden by default. To unlock:
+  // 1. Add ?admin=true to the URL (e.g., yoursite.com/?admin=true#gallery)
+  // 2. OR press Ctrl+Shift+E anywhere on the page
+  // Both methods prompt for a password. Session is remembered.
+
+  const ADMIN_PASS = 'khushi2026'; // Change this to your secret password
+  const ADMIN_SESSION_KEY = 'heykhushi_admin_auth';
+  let adminUnlocked = false;
+
+  function hashSimple(str) {
+    // Simple hash for basic obfuscation (not cryptographic security)
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return hash.toString(36);
+  }
+
+  const ADMIN_HASH = hashSimple(ADMIN_PASS);
+
+  function unlockAdmin() {
+    adminUnlocked = true;
+    editFab.classList.add('admin-unlocked');
+    sessionStorage.setItem(ADMIN_SESSION_KEY, ADMIN_HASH);
+  }
+
+  function promptAdminPassword() {
+    const pwd = prompt('🔐 Enter admin password to edit gallery:');
+    if (pwd === null) return; // cancelled
+    if (hashSimple(pwd) === ADMIN_HASH) {
+      unlockAdmin();
+    } else {
+      alert('❌ Wrong password. Access denied.');
+    }
+  }
+
+  // Check if already authenticated this session
+  if (sessionStorage.getItem(ADMIN_SESSION_KEY) === ADMIN_HASH) {
+    unlockAdmin();
+  }
+
+  // Check URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === 'true' && !adminUnlocked) {
+    promptAdminPassword();
+  }
+
+  // Secret keyboard shortcut: Ctrl+Shift+E
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+      e.preventDefault();
+      if (!adminUnlocked) {
+        promptAdminPassword();
+      } else {
+        // Already unlocked — toggle editor
+        if (editorOpen) closeEditor();
+        else openEditor();
+      }
+    }
+  });
+
+  editFab.addEventListener('click', () => {
+    if (editorOpen) closeEditor();
+    else openEditor();
+  });
+
+  editorClose.addEventListener('click', closeEditor);
+  editorDone.addEventListener('click', closeEditor);
+
+  editorReset.addEventListener('click', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    // Reset all images to default
+    galItems.forEach(item => {
+      const img = item.querySelector('img');
+      if (img) img.style.objectPosition = 'center top';
+    });
+    // Rebuild cards
+    buildEditorCards();
+  });
+
+  // Apply saved settings on load
+  applyGallerySettings();
 
   // ════════════════════════════════════════════
   //  YOUTUBE DATA API v3

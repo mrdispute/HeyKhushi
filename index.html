@@ -374,26 +374,47 @@
       <div class="section-inner">
         <h2 class="section-label reveal">Gallery</h2>
         <p class="section-desc reveal delay-1">Moments from the stream, behind the scenes, and more.</p>
-        <!-- Gallery grid — first 3 are local assets, rest filled dynamically from YT thumbnails -->
+        <!-- Gallery grid -->
         <div class="gallery-mosaic" id="gallery-grid">
-          <div class="gal-item gal-tall reveal delay-1">
-            <img src="assets/gallery-stream.png" alt="Stream Setup">
+          <div class="gal-item gal-tall reveal delay-1" data-id="gal-1">
+            <img src="assets/gallery-isupreme.jpg" alt="Khushi — iSUPREME Welcome Poster">
           </div>
-          <div class="gal-item reveal delay-2">
-            <img src="assets/gallery-gaming.png" alt="Gaming Highlights">
+          <div class="gal-item reveal delay-2" data-id="gal-2">
+            <img src="assets/gallery-cartoon.jpg" alt="Khushi — 3D Avatar">
           </div>
-          <div class="gal-item reveal delay-3">
-            <img src="assets/gallery-desk.png" alt="Creator Desk">
+          <div class="gal-item reveal delay-3" data-id="gal-3">
+            <img src="assets/gallery-bw-portrait.png" alt="Khushi — B&W Portrait">
           </div>
-          <div class="gal-item gal-wide reveal delay-4">
-            <img src="assets/gallery-vibes.png" alt="Late Night Vibes">
+          <div class="gal-item gal-wide reveal delay-4" data-id="gal-4">
+            <img src="assets/gallery-bw-fashion.jpg" alt="Khushi — Fashion Editorial">
           </div>
-          <div class="gal-item reveal delay-5">
-            <img src="assets/gallery-community.png" alt="Community">
+          <div class="gal-item reveal delay-5" data-id="gal-5">
+            <img src="assets/gallery-ethnic.jpg" alt="Khushi — Ethnic Look">
           </div>
-          <div class="gal-item reveal delay-6">
-            <img src="assets/gallery-journey.png" alt="The Journey">
-          </div>
+        </div>
+      </div>
+
+      <!-- Floating gallery edit button -->
+      <button class="gal-edit-fab" id="gal-edit-fab" aria-label="Edit Gallery" title="Edit Gallery Positioning">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </button>
+
+      <!-- Gallery Editor Panel -->
+      <div class="gal-editor-panel" id="gal-editor-panel">
+        <div class="gal-editor-header">
+          <h3>📸 Gallery Editor</h3>
+          <p>Drag images to reposition or use sliders. Changes are saved automatically.</p>
+          <button class="gal-editor-close" id="gal-editor-close" aria-label="Close Editor">✕</button>
+        </div>
+        <div class="gal-editor-cards" id="gal-editor-cards">
+          <!-- Cards will be populated by JS -->
+        </div>
+        <div class="gal-editor-footer">
+          <button class="btn btn-glass gal-editor-reset" id="gal-editor-reset">↺ Reset All Positions</button>
+          <button class="btn btn-glow gal-editor-done" id="gal-editor-done">✓ Done</button>
         </div>
       </div>
     </section>
