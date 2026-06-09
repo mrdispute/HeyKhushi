@@ -603,6 +603,20 @@ document.addEventListener('DOMContentLoaded', () => {
   editorClose.addEventListener('click', closeEditor);
   editorDone.addEventListener('click', closeEditor);
 
+  // Toast notification helper
+  function showToast(msg, duration = 3000) {
+    let toast = document.querySelector('.gal-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'gal-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+  }
+
   editorReset.addEventListener('click', () => {
     localStorage.removeItem(STORAGE_KEY);
     // Reset all images to default
@@ -612,6 +626,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Rebuild cards
     buildEditorCards();
+    showToast('✅ All positions reset to default');
+  });
+
+  // ── EXPORT IMAGES — Download uploaded images with correct filenames ──
+  const editorExport = document.getElementById('gal-editor-export');
+  editorExport.addEventListener('click', () => {
+    const settings = loadGallerySettings();
+    let downloadCount = 0;
+
+    galItems.forEach(item => {
+      const id = item.dataset.id;
+      const s = settings[id];
+      if (!s || !s.src) return; // Skip if no uploaded image
+
+      const img = item.querySelector('img');
+      // Get the original filename from the src attribute in HTML
+      const originalSrc = item.querySelector('img').getAttribute('src');
+      const filename = originalSrc.split('/').pop() || `gallery-${id}.jpg`;
+
+      // Create download link
+      const a = document.createElement('a');
+      a.href = s.src;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      downloadCount++;
+    });
+
+    if (downloadCount === 0) {
+      showToast('ℹ️ No uploaded images to export. Only custom-uploaded images need exporting.');
+    } else {
+      showToast(`⬇️ Downloading ${downloadCount} image${downloadCount > 1 ? 's' : ''}... Save to your assets/ folder`);
+    }
+  });
+
+  // ── HARD APPLY — Generate updated HTML with baked-in positions & copy to clipboard ──
+  const editorApply = document.getElementById('gal-editor-apply');
+  editorApply.addEventListener('click', () => {
+    // Build the gallery HTML with positions baked in
+    let html = '        <div class="gallery-mosaic" id="gallery-grid">\n';
+
+    galItems.forEach(item => {
+      const id = item.dataset.id;
+      const img = item.querySelector('img');
+      if (!img) return;
+
+      // Get current classes
+      const classes = Array.from(item.classList)
+        .filter(c => !['visible', 'editing'].includes(c))
+        .join(' ');
+
+      // Get current object-position
+      const pos = img.style.objectPosition || 'center top';
+
+      // Get the original src (not data URL) — use the HTML attribute
+      const src = img.getAttribute('src');
+      // If it's a data URL, use the original filename from HTML
+      let finalSrc = src;
+      if (src.startsWith('data:')) {
+        // Try to find original filename
+        const originalImg = item.querySelector('img');
+        const attrSrc = originalImg.dataset.originalSrc || `assets/gallery-${id}.jpg`;
+        finalSrc = attrSrc;
+      }
+
+      const alt = img.alt || '';
+
+      html += `          <div class="${classes}" data-id="${id}">\n`;
+      html += `            <img src="${finalSrc}" alt="${alt}" style="object-position:${pos}">\n`;
+      html += `          </div>\n`;
+    });
+
+    html += '        </div>';
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(html).then(() => {
+      showToast('✅ Gallery HTML copied to clipboard! Paste it into your index.html to replace the gallery-mosaic div.', 5000);
+    }).catch(() => {
+      // Fallback: show in a prompt
+      const ta = document.createElement('textarea');
+      ta.value = html;
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('✅ Gallery HTML copied! Paste into index.html to replace gallery-mosaic div.', 5000);
+    });
+
+    // Also log it to console for easy access
+    console.log('=== GALLERY HTML — Copy & paste into index.html ===');
+    console.log(html);
+    console.log('=== END ===');
   });
 
   // Apply saved settings on load

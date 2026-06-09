@@ -352,9 +352,16 @@ ul{list-style:none}
 .gal-upload-btn input[type="file"]{display:none}
 
 /* Editor Footer */
-.gal-editor-footer{padding:16px 28px 24px;display:flex;align-items:center;justify-content:flex-end;gap:12px;border-top:1px solid rgba(255,255,255,.06);position:sticky;bottom:0;background:rgba(14,18,37,.98);z-index:2}
+.gal-editor-footer{padding:16px 28px 24px;display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);position:sticky;bottom:0;background:rgba(14,18,37,.98);z-index:2}
 .gal-editor-reset{font-size:.82rem !important;padding:10px 20px !important}
 .gal-editor-done{font-size:.82rem !important;padding:10px 24px !important}
+.gal-editor-export{font-size:.82rem !important;padding:10px 20px !important}
+.gal-editor-apply{font-size:.82rem !important;padding:10px 20px !important;background:linear-gradient(135deg,var(--emerald),#059669) !important;box-shadow:0 4px 20px rgba(52,211,153,.25) !important}
+.gal-editor-apply:hover{box-shadow:0 8px 28px rgba(52,211,153,.35) !important}
+
+/* Toast notification */
+.gal-toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(14,18,37,.95);backdrop-filter:blur(20px);border:1px solid rgba(52,211,153,.3);border-radius:var(--radius-sm);padding:14px 24px;color:var(--emerald);font-size:.88rem;font-weight:500;z-index:9999;opacity:0;transition:all .4s var(--ease);pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:90vw;text-align:center}
+.gal-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* ---------- CONNECT (Creative Bento) ---------- */
 .connect-inner{max-width:var(--max-w);margin:0 auto}
 .connect-bento{display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:auto auto;gap:16px;margin-bottom:40px}
